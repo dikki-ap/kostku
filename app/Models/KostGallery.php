@@ -26,7 +26,7 @@ class KostGallery extends Model
 
     // Mengubah URL Image, menjadi URL Full
     public function getUrlAttribute($url){
-        return config('app.url') . Storage::url($url);
+        return Storage::url($url);
         // $ipV4 = 'http://192.168.43.176:8080/';
         // $fullUrl = Storage::url($url);
         // $imageUrl = explode('http://kostku.test/', $fullUrl);
