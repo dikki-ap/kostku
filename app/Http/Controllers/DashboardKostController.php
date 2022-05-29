@@ -7,6 +7,7 @@ use App\Models\Kost;
 use App\Models\KostGallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardKostController extends Controller
 {
@@ -142,7 +143,16 @@ class DashboardKostController extends Controller
      */
     public function destroy(Kost $kost)
     {
+        $galleries = KostGallery::select('*')->where('kost_id', '=', $kost->id)->get();
+        foreach($galleries as $gallery){
+            $fileName = explode(config('app.url') . '/storage/', $gallery->url);
+            KostGallery::destroy($gallery->id);
+            Storage::delete($fileName[1]);
+        }
         Kost::destroy($kost->id);
+        // foreach($galleries as $gallery){
+        //     KostGallery::destroy($gallery->id);
+        // }
 
         return redirect('/dashboard/kosts')->with('success', 'Kost berhasil dihapus');
     }
